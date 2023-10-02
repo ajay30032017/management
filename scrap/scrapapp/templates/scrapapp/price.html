@@ -1,0 +1,26 @@
+{% extends 'scrapapp/base.html' %}
+{% block price %}
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="box-element product">
+            <img class="thumbnail" src="https://th.bing.com/th/id/OIP.GinGwSUfMt856voe1kgOugHaFH?w=231&h=180&c=7&r=0&o=5&dpr=1.4&pid=1.7">
+            <h6><strong>{{product.name}}</strong></h6>
+            <hr>
+
+            <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-list">Add to List</button>
+            <a class="btn btn-outline-success" href="#">View</a>
+            <h4 style="display: inline-block; float: right"><strong>${{product.price}}/KG</strong></h4>
+
+        
+    </div>
+
+    </div>
+    {% endfor%}
+    
+</div>
+
+
+
+
+{% endblock %}

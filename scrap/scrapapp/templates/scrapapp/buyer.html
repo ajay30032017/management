@@ -1,0 +1,94 @@
+{% extends 'scrapapp/base.html' %}
+{% block content%}
+{% load static %}
+<div class="box-element">
+    <div class="row">
+    <div class="col md-6">
+<a  class="btn btn-outline-dark" href="{% url 'price' %}">&#x2190; Back to List</a>
+</div>
+<div class="col md-6">
+<input  type='text'  id="pin"placeholder="e.g. 492039">
+<button type="submit" id="searchpin" class="btn btn-md btn-primary">Search</b>
+</div>
+</div>
+    <hr>
+    <h3>Scrap List Summary</h3>
+    <hr>
+    {%for add in address%}
+    {% if tarun.searchpin == add.pincode %}
+
+    {% for item in items%}
+    <div class="cart-row">
+        <div style="flex:2"><img class="row-image" src="{% static 'media/image/list.png'%}"></div>
+        <div style="flex:2"><p>{{item.product.name}}</p></div>
+        <div style="flex:1"><p>${{item.product.price}}</p></div>
+        <div style="flex:1"><p>{{item.quantity}}</p></div>
+    </div>
+    {%endfor%}
+    {%endif%}
+    
+    <div class="row">
+        <div class="col-md-6">
+    
+    <h5>Scrap To Be Sell :   {{add.total_weight}} Kgs</h5>
+    <h5>Total:   ${{order.get_total_price}}</h5>
+        </div>
+    
+    <div class="col-md-6">
+    
+    <h5>Address :{{add.address}}</h5>
+    <h5>Pipcode :{{add.pincode}}</h5>
+    </div>
+</div>
+    {% endfor%}
+</div>
+
+<script>
+
+    var search = document.getElementById('searchpin');
+    search.addEventListener('click',function(){
+        listOutArea();
+    })
+
+
+    function listOutArea(){
+        var data = {
+            'searchpin':document.getElementById('pin').value
+        }
+        console.log(document.getElementById('pin').value);
+
+
+        var url = '/search_area/'
+
+        fetch(url,{
+            method:'Post',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body:JSON.stringify({
+                'searchpin':data
+            })})
+            .then((response) => 
+                    response.json()
+            )
+            .then((data) =>{
+                console.log('hello',data)
+               
+                
+                
+                window.location.href = "{% url 'buyer'%}"
+
+            })
+
+
+
+
+
+        
+    }
+</script>
+
+
+
+{% endblock %}

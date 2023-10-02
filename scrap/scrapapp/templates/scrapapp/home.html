@@ -1,0 +1,121 @@
+{% extends 'scrapapp/base.html' %}
+{% block content%}
+{% load static%}
+{% if user.is_authenticated %}
+
+<div style="background-color:#2b968b" >
+    <div class="row">
+    <div style="padding:18% 0% 0% 10% ">
+    <div class="col lg-4">
+<form id="userselection">
+    <button type='button' id="buyer" value="buyer"class="btn btn-lg btn-light"><a href="{%url 'buyer'%}">Buyer!</a></button>
+   <br>
+   <br>
+   <br>
+    <button type='button' id="seller" class="btn btn-lg btn-light" value="seller"><a href="{%url 'price'%}">Seller!</a></button>
+</form>
+</div>
+</div>
+
+<div style="padding:15% 0% 0% 15% ">
+<div class="col lg-8">
+    <img class="thumbnail" src="{% static 'media/desktop.png'%}">
+</div>
+</div>
+<div>
+    
+{% endif%}
+
+<script type="text/javascript">
+    var buyer = document.getElementById('buyer');
+    var seller = document.getElementById('seller');
+
+    
+    buyer.addEventListener("click",function(){
+       
+		console.log('clicked userselection')
+        
+        buyerRequestProcess();
+    })
+
+    seller.addEventListener("click",function(){
+        
+		console.log('clicked userselection')
+        sellerRequestProcess();
+    })
+
+
+
+
+function buyerRequestProcess(){
+    console.log("make userbuyer button clicked!")
+    var formUserData ={
+        'type':userselection.buyer.value,
+        
+
+        
+    }
+
+
+    var url = '/user_select/';
+
+		fetch(url,{
+				method:'Post',
+				headers:{
+					'Content-Type':'application/json',
+            		'X-CSRFToken': csrftoken,
+				},
+				body:JSON.stringify({
+					'formUser':formUserData
+				})})
+				.then((response) => 
+						response.json()
+				)
+				.then((data) =>{
+					console.log('hello',data)
+					alert('select userType')
+					
+					
+					window.location.href = "{% url 'buyer'%}"
+
+				})}
+
+
+function sellerRequestProcess(){
+    console.log("make userseller button clicked!")
+    var formUserData ={
+        
+        'type':userselection.seller.value,
+
+        
+    }
+
+
+    var url = '/user_select/';
+
+        fetch(url,{
+                method:'Post',
+                headers:{
+                    'Content-Type':'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body:JSON.stringify({
+                    'formUser':formUserData
+                })})
+                .then((response) => 
+                        response.json()
+                )
+                .then((data) =>{
+                    console.log('hello',data)
+                    alert('select userType')
+                    
+                    
+                    window.location.href = "{% url 'price'%}"
+
+                })}
+
+
+</script>
+
+{% endblock %}
+

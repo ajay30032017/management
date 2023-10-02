@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'css/c.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+      
+        <script type="text/javascript">
+            var user = '{{request.user}}'
+        
+            function getCookies(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookies('csrftoken');
+        </script>
+        <div class="newc">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="">{{user.username|upper}}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'price'%}">Price</a>
+                </li>
+                
+                
+              </ul>
+
+              {% if user.is_authenticated %}
+              <p id=""><a href="{% url 'buyer'%}" class="btn btn-primary">buyer</a></p>
+              <p><a href="{% url 'list'%}" class="btn btn-primary">seller</a></p>
+            
+            <p><a href="{% url 'logout'%}" class="btn btn-warning">Log out</a></p>
+            <a href="{% url 'list' %}">
+                <img  id="cart-icon" src="{% static 'media/image/list.png'%}">
+            </a>
+            <p id="cart-total">{{order.get_total_items}}</p>
+
+        </div>
+    </nav>
+  </div>
+    {% block content%}
+    {% endblock%}
+
+       
+            {% else%}
+              <div class="form-inline my-2 my-lg-0">
+                <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+                <a href="{%url 'signup'%}"class="btn btn-warning">SignUp</a>
+            </div>
+           
+        </div>
+      </nav>
+                {% block uservarify %}
+                {% endblock%}
+                
+                
+          {%endif%}
+          {% block price %}
+          {% endblock%}
+       
+          
+       
+    
+          <script src={% static 'js/ma.js'%}></script>
+
+          
+    </body>
+</html>
